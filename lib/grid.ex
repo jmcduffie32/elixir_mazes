@@ -149,7 +149,7 @@ defmodule Grid do
     end
   end
 
-  defp label_cell(grid, cell, label_x, label_y) do
+  defp label_cell(cell, label_x, label_y) do
     """
     <text x="#{label_x}" y="#{label_y}" font-family="Arial" font-size="10" text-anchor="middle" alignment-baseline="middle">#{cell.row},#{cell.col}</text>
     """
@@ -183,7 +183,7 @@ defmodule Grid do
         label_y = ((r2 - r1) / 2 + r1) * :math.sin(theta * (col + 0.5)) + height / 2 + 1
 
         [
-          label_cell(grid, cell, label_x, label_y),
+          label_cell(cell, label_x, label_y),
           draw_straight_wall(
             grid,
             cell,
