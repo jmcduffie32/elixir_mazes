@@ -1,0 +1,39 @@
+# Mazes
+
+```elixir
+Mix.install([{:mazes, path: "/elixir_libs/el_mazes"}, {:kino, "~> 0.14.0"}])
+```
+
+## Square Grid
+
+```elixir
+{grid, _} = Grid.new(25,25)
+|> Grid.prepare_grid()
+|> RecursiveBacktracker.on()
+```
+
+<!-- livebook:{"reevaluate_automatically":true} -->
+
+```elixir
+Grid.svg(grid) |> Kino.Image.new(:svg)
+```
+
+## Polar Grid
+
+```elixir
+grid = Grid.new(5,5, :polar)
+|> Grid.prepare_grid()
+|> RecursiveBacktracker.on()
+|> elem(0)
+
+```
+
+```elixir
+grid.grid |> Enum.sort
+```
+
+<!-- livebook:{"reevaluate_automatically":true} -->
+
+```elixir
+Grid.svg(grid, 50) |> Kino.Image.new(:svg)
+```
