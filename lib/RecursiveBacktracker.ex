@@ -27,7 +27,7 @@ defmodule RecursiveBacktracker do
     if unvisited != [] do
       index = :rand.uniform(Enum.count(unvisited)) - 1
       next = Enum.at(unvisited, index)
-      step(%{grid | links: Grid.link(grid, current, next)}, [next | stack])
+      step(Grid.link(grid, current, next), [next | stack])
     else
       step(grid, rest)
     end

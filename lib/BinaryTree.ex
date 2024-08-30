@@ -6,7 +6,7 @@ defmodule BinaryTree do
       if neighbors != [] do
         index = :rand.uniform(Enum.count(neighbors))
         neighbor = Enum.at(neighbors, index - 1)
-        %{acc| links: Grid.link(acc, cell, neighbor)}
+        Grid.link(acc, cell, neighbor)
       else
         acc
       end

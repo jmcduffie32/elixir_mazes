@@ -15,7 +15,30 @@ Mix.install([{:mazes, path: "~/projects/elixir_mazes"}, {:kino, "~> 0.14.0"}])
 <!-- livebook:{"reevaluate_automatically":true} -->
 
 ```elixir
-Grid.svg(grid) |> Kino.Image.new(:svg)
+Grid.svg(grid, 10, 1) |> Kino.Image.new(:svg)
+```
+
+## Weave Grid
+
+```elixir
+{grid, _} = Grid.new(25,25, :square, true)
+|> Grid.prepare_grid()
+|> RecursiveBacktracker.on()
+```
+
+```elixir
+grid.under_cells
+```
+
+```elixir
+grid.links
+    |> Enum.map(fn {{k, _}, _} -> k end)
+    |> MapSet.new()
+    |> MapSet.member?(%Cell{row: 5, col: 15, over: false})
+```
+
+```elixir
+Grid.svg(grid, 20, 2) |> Kino.Image.new(:svg)
 ```
 
 ## Polar Grid
