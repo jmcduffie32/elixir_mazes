@@ -4,7 +4,7 @@
 Mix.install([{:mazes, path: "~/projects/elixir_mazes"}, {:kino, "~> 0.14.0"}])
 ```
 
-## Square Grid
+## Kruskal's Algorithm
 
 ```elixir
 state = Grid.new(10,10)

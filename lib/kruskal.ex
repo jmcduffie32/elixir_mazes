@@ -31,21 +31,21 @@ defmodule Kruskal do
         set = Enum.count(state.set_for_cell) + 1
         state = put_in(state.set_for_cell[cell], set)
         state = put_in(state.cells_in_set[set], [cell])
-        state = put_in(state.neighbors, state.neighbors ++ neighbors(grid, cell))
+        state = update_in(state.neighbors, &Enum.concat(&1, neighbors(grid, cell)))
         state
       end)
     end
 
     def can_merge(state, cell1, cell2) do
-      set1 = Map.get(state.set_for_cell, cell1)
-      set2 = Map.get(state.set_for_cell, cell2)
+      set1 = get_in(state.set_for_cell[cell1])
+      set2 = get_in(state.set_for_cell[cell2])
       set1 != set2
     end
 
     def merge(state, cell1, cell2) do
-      winner = Map.get(state.set_for_cell, cell1)
-      loser = Map.get(state.set_for_cell, cell2)
-      losers = Map.get(state.cells_in_set, loser)
+      winner = get_in(state.set_for_cell[cell1])
+      loser = get_in(state.set_for_cell[cell2])
+      losers = get_in(state.cells_in_set[loser])
 
       state =
         Enum.reduce(losers, state, fn cell, state ->
@@ -54,7 +54,7 @@ defmodule Kruskal do
           state
         end)
 
-      state = put_in(state.grid, Grid.link(state.grid, cell1, cell2))
+      state = update_in(state.grid, &Grid.link(&1, cell1, cell2))
       state
     end
   end
