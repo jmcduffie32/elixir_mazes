@@ -9,6 +9,7 @@ Mix.install([{:mazes, path: "~/projects/elixir_mazes"}, {:kino, "~> 0.14.0"}])
 ```elixir
 state = Grid.new(10,10)
 |> Grid.prepare_grid()
+|> Kruskal.State.new()
 |> Kruskal.on()
 ```
 
@@ -16,4 +17,28 @@ state = Grid.new(10,10)
 
 ```elixir
 Grid.svg(state.grid, 10, 1) |> Kino.Image.new(:svg)
+```
+
+## Weaves
+
+```elixir
+state = Grid.new(30,30,:square,true)
+|> Grid.prepare_grid()
+|> Map.put(:simple_neighbors, true)
+|> Kruskal.State.new()
+
+weave_count = 300 #Enum.count(state.grid.grid)
+state = Enum.reduce(1..weave_count, state, fn (_, state) ->
+  grid = state.grid.grid
+  row = 1 + :random.uniform(state.grid.rows - 3)
+  col = 1 + :random.uniform(state.grid.cols - 3)
+  Kruskal.State.add_crossing(state, Map.get(grid, {row, col}))
+end)
+state = Kruskal.on(state)
+```
+
+<!-- livebook:{"reevaluate_automatically":true} -->
+
+```elixir
+Grid.svg(state.grid, 25, 3) |> Kino.Image.new(:svg)
 ```

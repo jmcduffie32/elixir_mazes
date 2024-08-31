@@ -1,8 +1,24 @@
 defmodule Grid do
-  defstruct type: :square, rows: 0, cols: 0, grid: %{}, links: %{}, weave: false, under_cells: %{}
+  defstruct type: :square,
+            rows: 0,
+            cols: 0,
+            grid: %{},
+            links: %{},
+            weave: false,
+            under_cells: %{},
+            simple_neighbors: false
 
   def new(rows, cols, type \\ :square, weave \\ false) do
-    %Grid{type: type, rows: rows, cols: cols, grid: %{}, links: %{}, weave: weave}
+    %Grid{
+      type: type,
+      rows: rows,
+      cols: cols,
+      grid: %{},
+      links: %{},
+      weave: weave,
+      under_cells: %{},
+      simple_neighbors: false
+    }
   end
 
   defp polar_col_count(grid, row) do
@@ -78,7 +94,8 @@ defmodule Grid do
     Enum.filter(potential_neighbors, fn {r, c} -> Map.get(grid.grid, {r, c}) end)
   end
 
-  def neighbors(%Grid{weave: true} = grid, %{row: row, col: col} = cell) do
+  def neighbors(%Grid{weave: true} = grid, %{row: row, col: col} = cell)
+      when grid.simple_neighbors != true do
     potential_neighbors =
       neighbors(%{grid | weave: false}, cell) ++
         [
@@ -296,6 +313,10 @@ defmodule Grid do
 
   def linked?(grid, cell, dir_fn) do
     Map.get(grid.links, {cell, dir_fn.(grid, cell)})
+  end
+
+  def has_links?(grid, cell) do
+    Enum.any?(grid.links, fn {k, _} -> k == cell end)
   end
 
   def horizontal_passage?(grid, cell) do

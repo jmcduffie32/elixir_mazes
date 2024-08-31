@@ -45,7 +45,7 @@ defmodule Kruskal do
     def merge(state, cell1, cell2) do
       winner = get_in(state.set_for_cell[cell1])
       loser = get_in(state.set_for_cell[cell2])
-      losers = get_in(state.cells_in_set[loser])
+      losers = get_in(state.cells_in_set[loser]) || [cell2]
 
       state =
         Enum.reduce(losers, state, fn cell, state ->
@@ -57,10 +57,45 @@ defmodule Kruskal do
       state = update_in(state.grid, &Grid.link(&1, cell1, cell2))
       state
     end
+
+    def add_crossing(state, cell) do
+      west_cell = Grid.west(state.grid, cell)
+      east_cell = Grid.east(state.grid, cell)
+      north_cell = Grid.north(state.grid, cell)
+      south_cell = Grid.south(state.grid, cell)
+
+      if Grid.has_links?(state.grid, cell) || !can_merge(state, east_cell, west_cell) ||
+           !can_merge(state, north_cell, south_cell) do
+        state
+      else
+        state = %{
+          state
+          | neighbors:
+              Enum.filter(state.neighbors, fn {left, right} -> left != cell && right != cell end)
+        }
+
+        under_cell = %{cell | over: false}
+        state = update_in(state.grid.under_cells, &Map.put(&1, {under_cell.row, under_cell.col}, under_cell)
+)
+
+        if :rand.uniform() < 0.5 do
+          state
+          |> merge(west_cell, cell)
+          |> merge(cell, east_cell)
+          |> merge(north_cell, under_cell)
+          |> merge(south_cell, under_cell)
+        else
+          state
+          |> merge(north_cell, cell)
+          |> merge(cell, south_cell)
+          |> merge(east_cell, under_cell)
+          |> merge(west_cell, under_cell)
+        end
+      end
+    end
   end
 
-  def on(grid) do
-    state = State.new(grid)
+  def on(state) do
     neighbors = Enum.shuffle(state.neighbors)
 
     Enum.reduce(neighbors, state, fn {cell1, cell2}, state ->
