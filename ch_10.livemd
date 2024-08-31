@@ -1,0 +1,19 @@
+# Mazes Ch.10
+
+```elixir
+Mix.install([{:mazes, path: "~/projects/elixir_mazes"}, {:kino, "~> 0.14.0"}])
+```
+
+## Square Grid
+
+```elixir
+state = Grid.new(10,10)
+|> Grid.prepare_grid()
+|> Kruskal.on()
+```
+
+<!-- livebook:{"reevaluate_automatically":true} -->
+
+```elixir
+Grid.svg(state.grid, 10, 1) |> Kino.Image.new(:svg)
+```
