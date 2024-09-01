@@ -8,6 +8,7 @@ defmodule Grid do
             under_cells: %{},
             simple_neighbors: false
 
+
   def new(rows, cols, type \\ :square, weave \\ false) do
     %Grid{
       type: type,
@@ -353,9 +354,9 @@ defmodule Grid do
     western_cell && west(grid, western_cell) && vertical_passage?(grid, western_cell)
   end
 
-  def svg(grid, cell_size \\ 10, inset \\ 0, file_name \\ "maze.svg")
+  def svg(grid, cell_size \\ 10, inset \\ 0)
 
-  def svg(%Grid{type: :polar} = grid, cell_size, _inset, file_name) do
+  def svg(%Grid{type: :polar} = grid, cell_size, _inset) do
     width = grid.rows * cell_size * 2
     height = width
 
@@ -420,12 +421,12 @@ defmodule Grid do
     </svg>
     """
 
-    File.write!(file_name, svg_str)
+    # File.write!(file_name, svg_str)
 
     svg_str
   end
 
-  def svg(grid, cell_size, inset, file_name) do
+  def svg(grid, cell_size, inset) do
     over_cells =
       for {{row, col}, cell} <- grid.grid do
         if inset == 0 do
@@ -510,7 +511,7 @@ defmodule Grid do
     </svg>
     """
 
-    File.write!(file_name, svg_str)
+    # File.write!(file_name, svg_str)
     svg_str
   end
 end

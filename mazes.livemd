@@ -1,7 +1,7 @@
 # Mazes
 
 ```elixir
-Mix.install([{:mazes, path: "~/projects/elixir_mazes"}, {:kino, "~> 0.14.0"}])
+Mix.install([{:mazes, path: "~/projects/elixir_mazes"}])
 ```
 
 ## Square Grid
@@ -10,12 +10,8 @@ Mix.install([{:mazes, path: "~/projects/elixir_mazes"}, {:kino, "~> 0.14.0"}])
 {grid, _} = Grid.new(25,25)
 |> Grid.prepare_grid()
 |> RecursiveBacktracker.on()
-```
 
-<!-- livebook:{"reevaluate_automatically":true} -->
-
-```elixir
-Grid.svg(grid, 10, 1) |> Kino.Image.new(:svg)
+grid
 ```
 
 ## Weave Grid
@@ -24,6 +20,8 @@ Grid.svg(grid, 10, 1) |> Kino.Image.new(:svg)
 {grid, _} = Grid.new(25,25, :square, true)
 |> Grid.prepare_grid()
 |> RecursiveBacktracker.on()
+
+grid
 ```
 
 ```elixir
@@ -37,10 +35,6 @@ grid.links
     |> MapSet.member?(%Cell{row: 5, col: 15, over: false})
 ```
 
-```elixir
-Grid.svg(grid, 20, 2) |> Kino.Image.new(:svg)
-```
-
 ## Polar Grid
 
 ```elixir
@@ -49,10 +43,4 @@ grid = Grid.new(6,6, :polar)
 |> RecursiveBacktracker.on()
 |> elem(0)
 
-```
-
-<!-- livebook:{"reevaluate_automatically":true} -->
-
-```elixir
-Grid.svg(grid, 40) |> Kino.Image.new(:svg)
 ```

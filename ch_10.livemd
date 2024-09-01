@@ -1,7 +1,7 @@
 # Mazes Ch.10
 
 ```elixir
-Mix.install([{:mazes, path: "~/projects/elixir_mazes"}, {:kino, "~> 0.14.0"}])
+Mix.install([{:mazes, path: "~/projects/elixir_mazes"}])
 ```
 
 ## Kruskal's Algorithm
@@ -11,12 +11,9 @@ state = Grid.new(10,10)
 |> Grid.prepare_grid()
 |> Kruskal.State.new()
 |> Kruskal.on()
-```
 
-<!-- livebook:{"reevaluate_automatically":true} -->
+state.grid
 
-```elixir
-Grid.svg(state.grid, 10, 1) |> Kino.Image.new(:svg)
 ```
 
 ## Weaves
@@ -27,7 +24,7 @@ state = Grid.new(30,30,:square,true)
 |> Map.put(:simple_neighbors, true)
 |> Kruskal.State.new()
 
-weave_count = 300 #Enum.count(state.grid.grid)
+weave_count = 10 #Enum.count(state.grid.grid)
 state = Enum.reduce(1..weave_count, state, fn (_, state) ->
   grid = state.grid.grid
   row = 1 + :random.uniform(state.grid.rows - 3)
@@ -35,10 +32,6 @@ state = Enum.reduce(1..weave_count, state, fn (_, state) ->
   Kruskal.State.add_crossing(state, Map.get(grid, {row, col}))
 end)
 state = Kruskal.on(state)
-```
 
-<!-- livebook:{"reevaluate_automatically":true} -->
-
-```elixir
-Grid.svg(state.grid, 25, 3) |> Kino.Image.new(:svg)
+state.grid
 ```
