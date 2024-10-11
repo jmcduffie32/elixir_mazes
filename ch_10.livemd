@@ -7,7 +7,7 @@ Mix.install([{:mazes, path: "~/projects/elixir_mazes"}])
 ## Kruskal's Algorithm
 
 ```elixir
-state = Grid.new(10,10)
+state = Grid.new(25,25)
 |> Grid.prepare_grid()
 |> Kruskal.State.new()
 |> Kruskal.on()
@@ -24,7 +24,7 @@ state = Grid.new(30,30,:square,true)
 |> Map.put(:simple_neighbors, true)
 |> Kruskal.State.new()
 
-weave_count = 10 #Enum.count(state.grid.grid)
+weave_count = 100 #Enum.count(state.grid.grid)
 state = Enum.reduce(1..weave_count, state, fn (_, state) ->
   grid = state.grid.grid
   row = 1 + :random.uniform(state.grid.rows - 3)
